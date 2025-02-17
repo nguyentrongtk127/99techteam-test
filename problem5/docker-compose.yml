@@ -1,0 +1,43 @@
+version: "3.3"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile # Tên file Dockerfile trong thư mục gốc, có thể thay đổi nếu cần
+    container_name: crude-server
+    environment:
+      - NODE_ENV=dev
+      - PORT=3008
+      - DATABASE_URL=postgresql://myuser:mypassword@crude-db:5432/crude
+      - DATABASE_SCHEMA=public
+      - DATABASE_RETRY_DELAY=5000
+      - DATABASE_RETRIES=10
+    ports:
+      - "3008:3008"
+    # command: sh -c "npm run migration:run"
+    depends_on:
+      - db
+    networks:
+      - my-network
+
+  db:
+    image: postgres:17
+    restart: always
+    shm_size: 512mb
+    container_name: crude-db
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=crude
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
+volumes:
+  db_data:

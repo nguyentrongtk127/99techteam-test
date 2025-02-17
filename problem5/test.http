@@ -1,0 +1,27 @@
+### Get alls
+GET http://localhost:3008/users?page=1&size=2&keyword=John&status=pending
+
+### Get details
+GET http://localhost:3008/users/1
+
+### Create new user
+POST http://localhost:3008/users
+Content-Type: application/json
+
+{
+    "email": "john.doe@yopmail.com",
+    "fullname": "John Nguyen",
+    "password": "JohnJohn"
+}
+
+### Update user
+PUT http://localhost:3008/users/2
+Content-Type: application/json
+
+{
+    "email": "new.doe@yopmail.com",
+    "status": "active"
+}
+
+### Delete user
+DELETE http://localhost:3008/users/1
